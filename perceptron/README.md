@@ -60,7 +60,7 @@ Work through the notebooks in order:
 
 | Notebook | Purpose |
 |---|---|
-| `01_perceptron_from_scratch.ipynb` | Build the weighted sum, step activation, and update rule using standard Python |
+| `01_perceptron_from_scratch.ipynb` | Build the weighted sum, step activation function, and update rule using standard Python |
 | `02_perceptron_with_numpy.ipynb` | Express the same calculation with NumPy arrays and dot products |
 | `03_visualising_the_perceptron.ipynb` | Plot the data, learned regions, boundary evolution, errors, predictions, and tolerance-band limitation |
 
@@ -116,8 +116,12 @@ The notebooks are stored without execution output so every student starts from a
 
 For one inspected part, the perceptron calculates:
 
+The **step activation function** converts the numerical score into a binary
+class: scores at or above zero map to `1`, while scores below zero map to `0`.
+
 ```text
 score = w_error * dimension_error_mm + w_defects * surface_defects + bias
+# Step activation function: scores >= 0 map to 1; scores < 0 map to 0.
 prediction = 1 if score >= 0 else 0
 ```
 

@@ -6,31 +6,40 @@ SEED = 42
 LEARNING_RATE = 0.1
 MAX_EPOCHS = 100
 
-TRAINING_DATA = [
-    ("P01", np.array([0.10, 0.0]), 1),
-    ("P02", np.array([0.15, 1.0]), 1),
-    ("P03", np.array([0.20, 0.0]), 1),
-    ("P04", np.array([0.25, 1.0]), 1),
-    ("P05", np.array([0.30, 0.0]), 1),
-    ("P06", np.array([0.05, 1.0]), 1),
-    ("P07", np.array([0.55, 0.0]), 0),
-    ("P08", np.array([0.45, 2.0]), 0),
-    ("P09", np.array([0.20, 3.0]), 0),
-    ("P10", np.array([0.70, 1.0]), 0),
-    ("P11", np.array([0.35, 2.0]), 0),
-    ("P12", np.array([0.60, 2.0]), 0),
-]
+part_ids = np.array([
+    "P01", "P02", "P03", "P04", "P05", "P06",
+    "P07", "P08", "P09", "P10", "P11", "P12",
+])
 
-TEST_CASES = [
-    ("T01", np.array([0.12, 0.0]), 1),
-    ("T02", np.array([0.28, 1.0]), 1),
-    ("T03", np.array([0.50, 1.0]), 0),
-    ("T04", np.array([0.10, 3.0]), 0),
-]
+X = np.array([
+    [0.10, 0.0],
+    [0.15, 1.0],
+    [0.20, 0.0],
+    [0.25, 1.0],
+    [0.30, 0.0],
+    [0.05, 1.0],
+    [0.55, 0.0],
+    [0.45, 2.0],
+    [0.20, 3.0],
+    [0.70, 1.0],
+    [0.35, 2.0],
+    [0.60, 2.0],
+])
+y = np.array([1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0])
+
+test_part_ids = np.array(["T01", "T02", "T03", "T04"])
+X_test = np.array([
+    [0.12, 0.0],
+    [0.28, 1.0],
+    [0.50, 1.0],
+    [0.10, 3.0],
+])
+y_test = np.array([1, 1, 0, 0])
 
 
 def predict(features, weights, bias):
     """Return the binary prediction for one inspected part."""
+    # Step activation function: scores >= 0 map to 1; scores < 0 map to 0.
     return 1 if np.dot(weights, features) + bias >= 0 else 0
 
 
@@ -47,34 +56,39 @@ print(f"Starting bias: {bias:.3f}\n")
 history = []
 for epoch in range(MAX_EPOCHS):
     errors = 0
-    for part_id, features, target in TRAINING_DATA:
-        prediction = predict(features, weights, bias)
-        error = target - prediction
-        if error != 0:
-            errors += 1
-            weights = weights + LEARNING_RATE * error * features
-            bias = bias + LEARNING_RATE * error
+    scores = X @ weights + bias
+    # Step activation function: scores >= 0 map to 1; scores < 0 map to 0.
+    predictions = (scores >= 0).astype(int)
+    errors = y - predictions
+    error_count = np.sum(errors != 0)
 
     history.append(errors)
     print(
-        f"Epoch {epoch + 1:3d} | Errors: {errors} | "
+        f"Epoch {epoch + 1:3d} | Errors: {error_count} | "
         f"Weights: {np.round(weights, 3)} | Bias: {bias:.3f}"
     )
-    if errors == 0:
+    if error_count == 0:
         print(f"\nTraining complete after {epoch + 1} epoch(s).")
         break
+
+    # update weights and bias
+    weights += LEARNING_RATE * (X.T @ errors)
+    bias += LEARNING_RATE * np.sum(errors)
 else:
     raise RuntimeError("The perceptron did not converge within 100 epochs.")
 
 print("\nTesting unseen parts")
-for part_id, features, expected in TEST_CASES:
-    score = float(np.dot(weights, features) + bias)
-    prediction = 1 if score >= 0 else 0
-    label = "ACCEPT" if prediction == 1 else "REJECT"
-    expected_label = "ACCEPT" if expected == 1 else "REJECT"
+scores_test = X_test @ weights + bias
+# Step activation function: scores >= 0 map to 1; scores < 0 map to 0.
+predictions_test = (scores_test >= 0).astype(int)
+
+for part_id, xi, yi, pi in zip(test_part_ids, X_test, y_test, predictions_test):
+
+    label = "ACCEPT" if pi == 1 else "REJECT"
+    expected_label = "ACCEPT" if yi == 1 else "REJECT"
     print(
-        f"{part_id}: dimension error={features[0]:.2f} mm, "
-        f"surface defects={int(features[1])}, score={score:+.3f} "
+        f"{part_id}: dimension error={xi[0]:.2f} mm, "
+        f"surface defects={int(xi[1])}, score={(weights @ xi + bias):+.3f} "
         f"-> {label} (expected {expected_label})"
     )
 
