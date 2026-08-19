@@ -44,6 +44,7 @@ def predict(features, weights, bias):
         + weights[1] * features[1]
         + bias
     )
+    # Step activation function: scores >= 0 map to 1; scores < 0 map to 0.
     return 1 if weighted_sum >= 0 else 0
 
 
