@@ -24,12 +24,11 @@ pypdf
 sentence-transformers
 faiss-cpu
 streamlit
-anthropic
-pypdf
-sentence-transformers
-faiss-cpu
 openai-agents
 mcp
 graphviz
 PyYAML==6.0.3
 pytest==8.4.1
+requests
+nbclient
+nbformat

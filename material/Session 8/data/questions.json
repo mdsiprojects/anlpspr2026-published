@@ -1,0 +1,54 @@
+[
+  {
+    "id": "q1",
+    "question": "What does the employee handbook say about annual leave or vacation leave?",
+    "expected_signal": "The answer should reference leave or vacation policy from the handbook.",
+    "source_docs": ["employee_handbook.pdf"]
+  },
+  {
+    "id": "q2",
+    "question": "Which health plan appears to offer broader benefits coverage, the standard plan or the health plus plan?",
+    "expected_signal": "The answer should compare the two Northwind plans using retrieved evidence rather than guessing.",
+    "source_docs": [
+      "Northwind_Standard_Benefits_Details.pdf",
+      "Northwind_Health_Plus_Benefits_Details.pdf"
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "What kinds of perks are described in the PerksPlus document?",
+    "expected_signal": "The answer should summarize perks from the PerksPlus PDF.",
+    "source_docs": ["PerksPlus.pdf"]
+  },
+  {
+    "id": "q4",
+    "question": "Does the handbook mention remote work or working from home?",
+    "expected_signal": "The answer should rely on retrieved handbook text and avoid inventing a policy.",
+    "source_docs": ["employee_handbook.pdf"]
+  },
+  {
+    "id": "q5",
+    "question": "Which plan would be more relevant for someone asking about pregnancy or maternity-related coverage?",
+    "expected_signal": "The answer should compare plan documents and point to retrieved plan details.",
+    "source_docs": [
+      "Northwind_Standard_Benefits_Details.pdf",
+      "Northwind_Health_Plus_Benefits_Details.pdf"
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "What evidence is there that one document includes extra perks outside core health coverage?",
+    "expected_signal": "The answer should use retrieved content from PerksPlus or cross-document comparison.",
+    "source_docs": [
+      "PerksPlus.pdf",
+      "Northwind_Standard_Benefits_Details.pdf",
+      "Northwind_Health_Plus_Benefits_Details.pdf"
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "What is the company policy on reimbursing home internet bills?",
+    "expected_signal": "If the documents do not mention this, the answer should say there is not enough information.",
+    "source_docs": []
+  }
+]
