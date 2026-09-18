@@ -26,10 +26,6 @@ By the end of the session, you should be able to:
 | 5 | Agents as tools, handoffs, reliability, and human approval | Notebook 02 + design activity |
 | Extension | Streaming, context, hooks, Gradio, approval UI, and local-model tracing | Notebooks 03–05 |
 
-## Slides
-
-[Session 9 lecture slides](ANLP%20Session9_Week10_REVISED_OLLAMA_MLFLOW.pptx) include the optional Ollama and MLflow lab.
-
 ## Notebooks
 
 ### Core
